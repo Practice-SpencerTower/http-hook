@@ -20,16 +20,11 @@ function App() {
         isLoading,
         error,
         sendRequest: fetchTasks,
-    } = useHttp(
-        {
-            url: 'https://react-http-9f7be-default-rtdb.firebaseio.com/tasks.json',
-        },
-        transformTasks
-    );
+    } = useHttp(transformTasks);
 
     useEffect(() => {
         fetchTasks();
-    }, []);
+    }, [fetchTasks]); // fetchTasks is sendRequest
 
     const taskAddHandler = (task) => {
         setTasks((prevTasks) => prevTasks.concat(task));
