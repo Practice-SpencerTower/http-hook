@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
+// applyData is a function
 const useHttp = (requestConfig, applyData) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const sendRequest = async () => {
+    const sendRequest = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
@@ -21,11 +22,12 @@ const useHttp = (requestConfig, applyData) => {
             }
             // transform the response into json
             const data = await response.json();
+            applyData(data);
         } catch (err) {
             setError(err.message || 'Something went wrong!');
         }
         setIsLoading(false);
-    };
+    }, [requestConfig, applyData]);
     return {
         isLoading,
         error,
